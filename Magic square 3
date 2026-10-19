@@ -1,0 +1,106 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout << "Enter an odd positive integer n (max 99): ";
+    cin >> n;
+
+    // Input validation
+    if (n <= 0) {
+        cout << "Error: n must be a positive integer!\n";
+        return 1;
+    }
+
+    if (n % 2 == 0) {
+        cout << "Error: n must be an ODD number!\n";
+        return 1;
+    }
+
+    if (n >= 100) {
+        cout << "Error: Please enter a number less than 100.\n";
+        return 1;
+    }
+
+    int magic[100][100] = {0};
+
+    int row = 0;
+    int col = (n - 1) / 2;
+
+    // Generate Magic Square
+    for (int num = 1; num <= n * n; num++)
+    {
+        magic[row][col] = num;
+
+        int newRow = row - 1;
+        int newCol = col - 1;
+
+        if (newRow < 0)
+            newRow = n - 1;
+
+        if (newCol < 0)
+            newCol = n - 1;
+
+        if (magic[newRow][newCol] != 0)
+        {
+            row = row + 1;
+
+            if (row >= n)
+                row = 0;
+        }
+        else
+        {
+            row = newRow;
+            col = newCol;
+        }
+    }
+
+    // Print Magic Square without boxes
+    cout << "\nMagic Square of order " << n << ":\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << setw(4) << magic[i][j];
+        }
+        cout << endl;
+    }
+
+    // Verification
+    int expectedSum = n * (n * n + 1) / 2;
+    bool isValid = true;
+
+    for (int i = 0; i < n; i++)
+    {
+        int rowSum = 0;
+        int colSum = 0;
+
+        for (int j = 0; j < n; j++)
+        {
+            rowSum += magic[i][j];
+            colSum += magic[j][i];
+        }
+
+        if (rowSum != expectedSum ||
+            colSum != expectedSum)
+        {
+            isValid = false;
+            break;
+        }
+    }
+
+    // Display Results
+    cout << "\n--- Verification Results ---\n";
+    cout << "Expected Sum for each Row/Column: "
+         << expectedSum << "\n";
+
+    if (isValid)
+        cout << "Status: Valid Magic Square!\n";
+    else
+        cout << "Status: Not a Magic Square!\n";
+
+    return 0;
+}
