@@ -1,0 +1,112 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout << "Enter an odd positive integer n (max 99): ";
+    cin >> n;
+
+    // ১. ইনপুট ভ্যালিডেশন
+    if (n <= 0) {
+        cout << "Error: n must be a positive integer!\n";
+        return 1;
+    }
+    if (n % 2 == 0) {
+        cout << "Error: n must be an ODD number! Even numbers are not allowed.\n";
+        return 1;
+    }
+    if (n >= 100) {
+        cout << "Error: Please enter a number less than 100.\n";
+        return 1;
+    }
+
+    // আপনার কোডের মতো ফিক্সড টু-ডাইমেনশনাল অ্যারে (ভেক্টর ছাড়া)
+    int magic[100][100] = {0};
+
+    int row = 0;
+    int col = (n - 1) / 2;
+
+    // ২. ম্যাজিক স্কয়ার তৈরির লজিক (আপনার মূল লজিক)
+    for (int num = 1; num <= n * n; num++)
+    {
+        magic[row][col] = num;
+
+        int newRow = row - 1;
+        int newCol = col - 1;
+
+        // Boundary check
+        if (newRow < 0)
+            newRow = n - 1;
+
+        if (newCol < 0)
+            newCol = n - 1;
+
+        // If the target cell is occupied
+        if (magic[newRow][newCol] != 0)
+        {
+            row = row + 1;
+
+            if (row >= n)
+                row = 0;
+        }
+        else
+        {
+            row = newRow;
+            col = newCol;
+        }
+    }
+
+    // ৩. ম্যাজিক স্কয়ার প্রিন্ট করা (আপনার স্টাইলে ডাইনামিক বক্সসহ)
+    cout << "\nMagic Square of order " << n << ":\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++) {
+            cout << "+----";
+        }
+        cout << "+\n";
+
+        for (int j = 0; j < n; j++)
+        {
+            cout << "| " << setw(2) << magic[i][j] << " ";
+        }
+
+        cout << "|\n";
+    }
+
+    for (int j = 0; j < n; j++) {
+        cout << "+----";
+    }
+    cout << "+\n";
+
+    // ৪. সঠিকতা যাচাই বা ভেরিফিকেশন
+    int expectedSum = n * (n * n + 1) / 2;
+    bool isValid = true;
+
+    for (int i = 0; i < n; i++) {
+        int rowSum = 0;
+        int colSum = 0;
+        for (int j = 0; j < n; j++) {
+            rowSum += magic[i][j];
+            colSum += magic[j][i];
+        }
+        if (rowSum != expectedSum || colSum != expectedSum) {
+            isValid = false;
+            break;
+        }
+    }
+
+    // ৫. ফলাফল প্রদর্শন
+    cout << "\n--- Verification Results ---\n";
+    cout << "Expected Sum for each Row/Column: " << expectedSum << "\n";
+
+    if (isValid) {
+        cout << "Status: Valid Magic Square!\n";
+    } else {
+        cout << "Status: Not a Magic Square!\n";
+    }
+
+    return 0;
+}
