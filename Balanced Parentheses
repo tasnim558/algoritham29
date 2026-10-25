@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    char exp[100];
+    char s[100];
+    int top = -1;
+    bool balanced = true;
+
+    cout << "Enter expression: ";
+    cin >> exp;
+
+    for (int i = 0; exp[i] != '\0'; i++)
+    {
+        if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
+        {
+            top++;
+            s[top] = exp[i];
+        }
+        else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']')
+        {
+            if (top == -1)
+            {
+                balanced = false;
+                break;
+            }
+
+            if ((exp[i] == ')' && s[top] == '(') ||
+                (exp[i] == '}' && s[top] == '{') ||
+                (exp[i] == ']' && s[top] == '['))
+            {
+                top--;
+            }
+            else
+            {
+                balanced = false;
+                break;
+            }
+        }
+    }
+
+    if (top != -1)
+        balanced = false;
+
+    if (balanced)
+        cout << "Balanced Parentheses";
+    else
+        cout << "Not Balanced";
+
+    return 0;
+}
