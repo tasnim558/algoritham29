@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string infix, postfix = "";
+    char stack[100];
+    int top = -1;
+
+    cout << "Enter infix expression: ";
+    cin >> infix;
+
+    for (int i = 0; i < infix.length(); i++)
+    {
+        char ch = infix[i];
+
+        // Operand directly goes to postfix
+        if ((ch >= 'A' && ch <= 'Z') ||
+            (ch >= 'a' && ch <= 'z') ||
+            (ch >= '0' && ch <= '9'))
+        {
+            postfix += ch;
+        }
+        else if (ch == '(')
+        {
+            top++;
+            stack[top] = ch;
+        }
+        else if (ch == ')')
+        {
+            while (top != -1 && stack[top] != '(')
+            {
+                postfix += stack[top];
+                top--;
+            }
+
+            if (top != -1)
+                top--;
+        }
+        else
+        {
+            while (top != -1 && stack[top] != '(' &&
+                  ((ch == '+' || ch == '-') ||
+                  (stack[top] == '*' || stack[top] == '/')))
+            {
+                postfix += stack[top];
+                top--;
+            }
+
+            top++;
+            stack[top] = ch;
+        }
+    }
+
+    while (top != -1)
+    {
+        postfix += stack[top];
+        top--;
+    }
+
+    cout << "Postfix expression: " << postfix << endl;
+
+    return 0;
+}
