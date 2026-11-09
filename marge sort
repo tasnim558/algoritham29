@@ -1,58 +1,84 @@
-
 #include <iostream>
 using namespace std;
 
-void merge(int a[], int l, int m, int r)
-{
-    int temp[100];
-    int i = l, j = m + 1, k = l;
+int a[100], temp[100];
 
-    while (i <= m && j <= r)
+void merge(int left, int mid, int right)
+{
+    int first = left;
+    int second = mid + 1;
+    int position = left;
+
+    while (first <= mid && second <= right)
     {
-        if (a[i] < a[j])
-            temp[k++] = a[i++];
+        if (a[first] < a[second])
+        {
+            temp[position] = a[first];
+            first++;
+        }
         else
-            temp[k++] = a[j++];
+        {
+            temp[position] = a[second];
+            second++;
+        }
+        position++;
     }
 
-    while (i <= m)
-        temp[k++] = a[i++];
+    while (first <= mid)
+    {
+        temp[position] = a[first];
+        first++;
+        position++;
+    }
 
-    while (j <= r)
-        temp[k++] = a[j++];
+    while (second <= right)
+    {
+        temp[position] = a[second];
+        second++;
+        position++;
+    }
 
-    for (i = l; i <= r; i++)
-        a[i] = temp[i];
+    for (int index = left; index <= right; index++)
+    {
+        a[index] = temp[index];
+    }
 }
 
-void sort(int a[], int l, int r)
+void mergeSort(int left, int right)
 {
-    if (l < r)
+    if (left < right)
     {
-        int m = (l + r) / 2;
+        int middle = (left + right) / 2;
 
-        sort(a, l, m);
-        sort(a, m + 1, r);
+        mergeSort(left, middle);
+        mergeSort(middle + 1, right);
 
-        merge(a, l, m, r);
+        merge(left, middle, right);
     }
 }
 
 int main()
 {
-    int a[100], n;
+    int n;
 
-    cout << "Enter n: ";
+    cout << "Enter array size: ";
     cin >> n;
 
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
+    cout << "Enter array elements: ";
 
-    sort(a, 0, n - 1);
+    for (int index = 0; index < n; index++)
+    {
+        cin >> a[index];
+    }
+
+    mergeSort(0, n - 1);
 
     cout << "Sorted array: ";
-    for (int i = 0; i < n; i++)
-        cout << a[i] << " ";
+
+    for (int index = 0; index < n; index++)
+    {
+        cout << a[index] << " ";
+    }
 
     return 0;
 }
