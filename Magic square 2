@@ -1,25 +1,32 @@
+
 #include <iostream>
-#include <iomanip>
 using namespace std;
 
 int main()
 {
     int n;
-    cout << "Enter an odd positive integer n (max 99): ";
+
+    cout << "Enter an odd positive integer: ";
     cin >> n;
 
-    if (n <= 0) {
-        cout << "Error: n must be a positive integer!\n";
-        return 1;
+    if (n <= 0)
+    {
+        cout << "Error: Positive number required!";
+        return 0;
     }
-    if (n % 2 == 0) {
-        cout << "Error: n must be an ODD number! Even numbers are not allowed.\n";
-        return 1;
+
+    if (n % 2 == 0)
+    {
+        cout << "Error: Enter an odd number!";
+        return 0;
     }
-    if (n >= 100) {
-        cout << "Error: Please enter a number less than 100.\n";
-        return 1;
+
+    if (n >= 100)
+    {
+        cout << "Error: Maximum size is 99!";
+        return 0;
     }
+
     int magic[100][100] = {0};
 
     int row = 0;
@@ -32,7 +39,6 @@ int main()
         int newRow = row - 1;
         int newCol = col - 1;
 
-        // Boundary check
         if (newRow < 0)
             newRow = n - 1;
 
@@ -41,7 +47,7 @@ int main()
 
         if (magic[newRow][newCol] != 0)
         {
-            row = row + 1;
+            row++;
 
             if (row >= n)
                 row = 0;
@@ -52,49 +58,16 @@ int main()
             col = newCol;
         }
     }
-    cout << "\nMagic Square of order " << n << ":\n";
+
+    cout << "Magic Square:\n";
 
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++) {
-            cout << "+----";
-        }
-        cout << "+\n";
-
         for (int j = 0; j < n; j++)
         {
-            cout << "| " << setw(2) << magic[i][j] << " ";
+            cout << magic[i][j] << "\t";
         }
-
-        cout << "|\n";
-    }
-
-    for (int j = 0; j < n; j++) {
-        cout << "+----";
-    }
-    cout << "+\n";
-    int expectedSum = n * (n * n + 1) / 2;
-    bool isValid = true;
-
-    for (int i = 0; i < n; i++) {
-        int rowSum = 0;
-        int colSum = 0;
-        for (int j = 0; j < n; j++) {
-            rowSum += magic[i][j];
-            colSum += magic[j][i];
-        }
-        if (rowSum != expectedSum || colSum != expectedSum) {
-            isValid = false;
-            break;
-        }
-    }
-    cout << "\n--- Verification Results ---\n";
-    cout << "Expected Sum for each Row/Column: " << expectedSum << "\n";
-
-    if (isValid) {
-        cout << "Status: Valid Magic Square!\n";
-    } else {
-        cout << "Status: Not a Magic Square!\n";
+        cout << endl;
     }
 
     return 0;
